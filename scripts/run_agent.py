@@ -13,7 +13,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from trading_agent.config import load_config
 from trading_agent.env import load_dotenv
-from trading_agent.research import generate_trade_research, report_to_dict
+from trading_agent.research import ReportTier, generate_trade_research, report_to_dict
 from trading_agent.runtime import PaperAgentRuntime, step_result_to_dict
 from trading_agent.state import JsonStateStore
 
@@ -26,6 +26,12 @@ def main() -> None:
     parser.add_argument("--reset", action="store_true", help="Reset the agent state before running")
     parser.add_argument("--allow-reprocess", action="store_true", help="Allow processing the latest bar again")
     parser.add_argument("--with-research", action="store_true", help="Call Claude and/or Miromind for a research report")
+    parser.add_argument(
+        "--report-tier",
+        choices=[tier.value for tier in ReportTier],
+        default=ReportTier.QUICK.value,
+        help="Report depth: quick=Claude risk check, medium=Claude+Miromind chat, deep=longer Miromind research",
+    )
     parser.add_argument(
         "--research-provider",
         choices=["claude", "miromind", "both"],
@@ -56,6 +62,7 @@ def main() -> None:
             step_payload=payload,
             include_claude=args.research_provider in {"claude", "both"},
             include_miromind=args.research_provider in {"miromind", "both"},
+            tier=args.report_tier,
         )
         payload["research"] = report_to_dict(research)
 
@@ -104,6 +111,15 @@ def _print_summary(payload: Dict[str, Any]) -> None:
 
     research = payload.get("research")
     if research:
+        if research.get("tier"):
+            print(f"\nReport Tier: {research['tier']}")
+        if research.get("investment_guidance"):
+            print("\nInvestment Guidance")
+            guidance = research["investment_guidance"]
+            print(f"- Rule action: {guidance.get('rule_action')}")
+            print(f"- Rule view: {guidance.get('rule_view')}")
+            print(f"- Execution posture: {guidance.get('execution_posture')}")
+            print(f"- Note: {guidance.get('real_money_note')}")
         if research.get("claude_review"):
             print("\nClaude Risk Review")
             print(research["claude_review"])

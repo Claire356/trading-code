@@ -99,23 +99,34 @@ export MIROMIND_API_KEY="你的 Miromind API Key"
 python3 scripts/check_llm_connections.py --provider both
 ```
 
-让 demo agent 在处理最新 K 线后生成研究报告：
+让 demo agent 在处理最新 K 线后生成报告。默认是快速报告，只调用 Claude 做低成本风险复核：
 
 ```bash
-python3 scripts/run_agent.py --with-research --research-provider both
+python3 scripts/run_agent.py --with-research
 ```
 
-只调用 Claude 做风险复核：
+报告分三档：
+
+```bash
+python3 scripts/run_agent.py --with-research --report-tier quick
+python3 scripts/run_agent.py --with-research --report-tier medium --research-provider both
+MIROMIND_TIMEOUT_SECONDS=120 python3 scripts/run_agent.py --with-research --report-tier deep --research-provider both
+```
+
+三档含义：
+
+- `quick`：快速报告，默认只做 Claude 风险复核，不调用 Miromind。
+- `medium`：中度报告，Claude 风险复核 + Miromind chat 简版研究。
+- `deep`：深度报告，Claude 风险复核 + Miromind Responses/更长研究；适合重大交易前，不建议每次都跑。
+
+也可以指定 provider：
 
 ```bash
 python3 scripts/run_agent.py --with-research --research-provider claude
-```
-
-只调用 Miromind Deep Research：
-
-```bash
 python3 scripts/run_agent.py --with-research --research-provider miromind
 ```
+
+报告会把“规则信号”“研究结论”“执行姿态”分开。`execution_posture` 只给运行层建议，例如 `observe`、`paper_or_human_review_before_real_order`，不代表自动实盘下单，也不是投资建议。
 
 默认模型可以用环境变量覆盖：
 

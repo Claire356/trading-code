@@ -1,0 +1,41 @@
+{
+  "market": {
+    "symbol": "00700",
+    "market": "HK",
+    "currency": "HKD",
+    "usd_to_symbol_fx": 7.8,
+    "lot_size": 100,
+    "tick_size": 0.01,
+    "point_value": 1.0,
+    "use_session_filter": true,
+    "enforce_t1": false
+  },
+  "data": {
+    "bars_csv": "data/sample_us.csv",
+    "benchmark_csv": "data/sample_us.csv"
+  },
+  "strategy": {
+    "use_benchmark_filter": false,
+    "use_relative_strength": false,
+    "benchmark_ema_len": 30,
+    "rs_len": 20,
+    "ema_fast_len": 8,
+    "ema_mid_len": 21,
+    "ema_slow_len": 50,
+    "adx_threshold": 10,
+    "breakout_len": 20,
+    "min_turnover": 0,
+    "min_price": 2,
+    "min_atr_pct": 0,
+    "max_atr_pct": 20,
+    "max_extension_atr": 20
+  },
+  "risk": {
+    "initial_capital_usd": 100000,
+    "risk_per_trade_pct": 0.75,
+    "max_position_pct": 25,
+    "commission_bps": 2.0,
+    "min_commission_usd": 1.0,
+    "slippage_bps": 3.0
+  }
+}

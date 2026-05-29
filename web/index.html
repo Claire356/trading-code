@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trading Agent Console</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Trading Agent Console</h1>
+          <p id="agentLine">Loading agent...</p>
+        </div>
+        <div class="status-stack">
+          <span id="claudeStatus" class="pill">Claude</span>
+          <span id="miromindStatus" class="pill">Miromind</span>
+        </div>
+      </header>
+
+      <section class="control-band">
+        <div class="control-group">
+          <label>报告级别</label>
+          <div class="segmented" role="tablist" aria-label="Report tier">
+            <button class="segment active" data-tier="quick">快速</button>
+            <button class="segment" data-tier="medium">中度</button>
+            <button class="segment" data-tier="deep">深度</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>研究来源</label>
+          <select id="providerSelect">
+            <option value="both">Claude + Miromind</option>
+            <option value="claude">Claude</option>
+            <option value="miromind">Miromind</option>
+          </select>
+        </div>
+
+        <label class="checkline">
+          <input id="researchToggle" type="checkbox" checked />
+          <span>生成报告</span>
+        </label>
+
+        <label class="checkline">
+          <input id="reprocessToggle" type="checkbox" />
+          <span>允许重跑当前 K 线</span>
+        </label>
+
+        <div class="actions">
+          <button id="runButton" class="primary">运行 Agent</button>
+          <button id="resetButton" class="secondary">重置纸交易</button>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel summary-panel">
+          <div class="panel-head">
+            <h2>当前状态</h2>
+            <span id="runState" class="muted">Ready</span>
+          </div>
+          <div class="metrics">
+            <div>
+              <span>动作</span>
+              <strong id="metricAction">-</strong>
+            </div>
+            <div>
+              <span>原因</span>
+              <strong id="metricReason">-</strong>
+            </div>
+            <div>
+              <span>权益</span>
+              <strong id="metricEquity">-</strong>
+            </div>
+            <div>
+              <span>现金</span>
+              <strong id="metricCash">-</strong>
+            </div>
+          </div>
+          <div class="guidance" id="guidanceBox">
+            <h3>投资建议区分</h3>
+            <p>运行后这里会显示规则动作、研究结论和执行姿态。</p>
+          </div>
+        </div>
+
+        <div class="panel chart-panel">
+          <div class="panel-head">
+            <h2>价格走势</h2>
+            <span id="chartLabel" class="muted">Sample data</span>
+          </div>
+          <canvas id="priceChart" width="900" height="320"></canvas>
+        </div>
+
+        <div class="panel report-panel">
+          <div class="panel-head">
+            <h2>Claude 风险复核</h2>
+            <span id="claudeTier" class="muted">-</span>
+          </div>
+          <pre id="claudeReport">等待运行。</pre>
+        </div>
+
+        <div class="panel report-panel">
+          <div class="panel-head">
+            <h2>Miromind 研究</h2>
+            <span id="miroTier" class="muted">-</span>
+          </div>
+          <pre id="miroReport">快速报告默认不调用 Miromind。</pre>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

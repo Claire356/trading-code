@@ -32,6 +32,18 @@ timestamp,open,high,low,close,volume
 python3 scripts/generate_sample_data.py
 ```
 
+打开本地界面：
+
+```bash
+python3 scripts/start_ui.py
+```
+
+然后在浏览器访问：
+
+```text
+http://127.0.0.1:8765
+```
+
 运行回测：
 
 ```bash

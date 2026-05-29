@@ -44,6 +44,14 @@ python3 scripts/start_ui.py
 http://127.0.0.1:8765
 ```
 
+部署到 Vercel：
+
+```bash
+vercel --prod
+```
+
+Vercel 部署后需要在项目环境变量里配置 `ANTHROPIC_API_KEY` 和 `MIROMIND_API_KEY`。云端 demo 使用 serverless `/tmp` 保存纸交易状态，适合演示界面和报告，不适合作为长期真实交易状态存储。
+
 运行回测：
 
 ```bash

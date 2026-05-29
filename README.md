@@ -44,6 +44,14 @@ python3 scripts/start_ui.py
 http://127.0.0.1:8765
 ```
 
+在 VS Code 窗口里打开界面：
+
+1. 打开命令面板：`Cmd+Shift+P`
+2. 选择 `Tasks: Run Task`
+3. 选择 `Start Trading Agent UI`
+4. 再打开命令面板，选择 `Simple Browser: Show`
+5. 输入 `http://127.0.0.1:8765`
+
 部署到 Vercel：
 
 ```bash

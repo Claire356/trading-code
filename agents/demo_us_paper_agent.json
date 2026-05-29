@@ -1,0 +1,7 @@
+{
+  "name": "demo-us-paper-agent",
+  "mode": "paper",
+  "description": "A ready-to-run long-only paper trading agent using the sample US configuration.",
+  "config": "configs/us_sample.json",
+  "state": ".agent_state/demo_us_paper_agent.json"
+}

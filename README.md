@@ -50,6 +50,18 @@ python3 -m trading_agent.cli signal --config configs/us_sample.json
 python3 -m trading_agent.cli run-once --config configs/us_sample.json --state .agent_state/us.json
 ```
 
+也可以直接运行已经生成好的 demo agent：
+
+```bash
+python3 scripts/run_agent.py
+```
+
+重置这个 demo agent 的纸交易状态：
+
+```bash
+python3 scripts/run_agent.py --reset
+```
+
 再次运行同一根 K 线时，agent 会返回 `bar_already_processed`，避免重复下单。需要重新开始纸交易状态时：
 
 ```bash
@@ -68,6 +80,61 @@ python3 -m trading_agent.cli backtest --config configs/us_sample.json --trades-o
 python3 -m trading_agent.cli sample-config --market US
 python3 -m trading_agent.cli sample-config --market A_SHARES
 python3 -m trading_agent.cli sample-config --market HK
+```
+
+## 接入 Claude 和 Miromind
+
+先设置环境变量，不要把真实 key 写进代码：
+
+```bash
+export ANTHROPIC_API_KEY="你的 Claude API Key"
+export MIROMIND_API_KEY="你的 Miromind API Key"
+```
+
+也可以复制 `.env.example` 为 `.env`，`scripts/run_agent.py` 和 `scripts/check_llm_connections.py` 会自动读取项目根目录的 `.env`。
+
+检查 API 是否连通：
+
+```bash
+python3 scripts/check_llm_connections.py --provider both
+```
+
+让 demo agent 在处理最新 K 线后生成研究报告：
+
+```bash
+python3 scripts/run_agent.py --with-research --research-provider both
+```
+
+只调用 Claude 做风险复核：
+
+```bash
+python3 scripts/run_agent.py --with-research --research-provider claude
+```
+
+只调用 Miromind Deep Research：
+
+```bash
+python3 scripts/run_agent.py --with-research --research-provider miromind
+```
+
+默认模型可以用环境变量覆盖：
+
+```bash
+export CLAUDE_MODEL="claude-sonnet-4-20250514"
+export MIROMIND_MODEL="mirothinker-1-7-deepresearch-mini"
+```
+
+如果 Miromind DeepResearch 同步调用较慢，可以调短或调长超时：
+
+```bash
+export MIROMIND_TIMEOUT_SECONDS=45
+export MIROMIND_RESEARCH_MODE=chat
+```
+
+需要强制使用 Miromind Responses API 时：
+
+```bash
+export MIROMIND_RESEARCH_MODE=responses
 ```
 
 ## 实盘接入方式
